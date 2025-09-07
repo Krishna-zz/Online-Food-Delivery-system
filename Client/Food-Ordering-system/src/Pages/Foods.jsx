@@ -5,7 +5,7 @@ import { useState } from "react";
 
 function Foods(){
  
-      const [foodItems, setFoodItems] = useState({})
+      const [foodItems, setFoodItems] = useState([])
 
  return(
 
@@ -13,9 +13,6 @@ function Foods(){
  
     <div className="min-h-screen bg-gray-50 flex-col  justify-center ">
 
-      
-
- 
     <nav className="flex justify-between items-center px-6 py-4 bg-white shadow-md mb-3 sticky top-0 z-50">
       {/* Logo */}
       <div 
