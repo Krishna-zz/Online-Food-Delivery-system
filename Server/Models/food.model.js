@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 const CardSchema = new mongoose.Schema({
     name:String,
     category:String,
-    price:Number
+    price:String,
+    image: String,
 })
 
 

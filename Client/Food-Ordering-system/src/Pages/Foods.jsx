@@ -1,11 +1,23 @@
 import { ShoppingCartIcon } from "@heroicons/react/24/solid"; 
-import ChickenMasala from "../assets/Chicken_masala.jpg"; 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 function Foods(){
  
+    const navigate = useNavigate()
+
       const [foodItems, setFoodItems] = useState([])
+
+
+      useEffect(() => {
+        fetch("http://localhost:3000/user/foodCard")
+        .then((res) => res.json())
+        .then((data) => setFoodItems(data))
+        .catch((err) => console.error("Error fetching Food Items", err)
+        )
+      },[])
+
 
  return(
 
@@ -28,7 +40,7 @@ function Foods(){
 
         {/* View Cart */}
         <button
-          
+          onClick={() => navigate('/Cart')}
           className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 hover:scale-105 transition-all duration-300 shadow-md"
         >
           <ShoppingCartIcon className="w-5 h-5" />
@@ -47,33 +59,39 @@ function Foods(){
                </div>
        
       {/* Card */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col w-80 hover:shadow-2xl transition">
-        
+      <div className="flex flex-wrap gap-6 justify-center mt-8">
+          {foodItems.map((food) => (
+         <div
+            key={food._id}
+            className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col w-80 hover:shadow-2xl transition"
+           >
         {/* Image */}
-        <div className="relative w-full h-48">
-          <img
-            src={ChickenMasala}
-            alt="Chicken Masala"
-            className="w-full h-full object-cover"
+           < div className="relative w-full h-48">
+           <img
+             src={`http://localhost:3000${food.image}`} // from backend
+             alt={food.name}
+             className="w-full h-full object-cover"
           />
-          <span className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
-            ₹300
+         <span className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+             ₹{food.price}
           </span>
-        </div>
-
-        {/* Details */}
-        <div className="flex flex-col flex-grow p-4 text-center">
-          <h3 className="text-xl font-bold text-gray-800">Chicken Masala</h3>
-          <p className="text-sm text-gray-500 mb-4">Non-Veg</p>
-          
-          {/* Button */}
-          <button className="mt-auto flex items-center justify-center gap-2 bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:bg-red-600 shadow-md transition">
-            <ShoppingCartIcon className="w-5 h-5" />
-            Add to Cart
-          </button>
-        </div>
       </div>
-    </div>
+
+      {/* Details */}
+        <div className="flex flex-col flex-grow p-4 text-center">
+           <h3 className="text-xl font-bold text-gray-800">{food.name}</h3>
+            <p className="text-sm text-gray-500 mb-4">{food.category}</p>
+
+              {/* Button */}
+              <button className="mt-auto flex items-center justify-center gap-2 bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:bg-red-600 shadow-md transition">
+               <ShoppingCartIcon className="w-5 h-5" />
+                   Add to Cart
+                </button>
+           </div>
+        </div>
+       ))}
+  </div>
+ </div>
   
   );
     

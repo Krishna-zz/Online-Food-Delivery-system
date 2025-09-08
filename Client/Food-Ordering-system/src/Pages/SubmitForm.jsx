@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 
 function SubmitForm(){
@@ -7,34 +9,43 @@ function SubmitForm(){
     const navigate = useNavigate()
 
     const [food , setFood] = useState({
-         name:"",
+        name:"",
         category:"",
         price:""
     })
 
-
+    const [file , setFile] = useState(null)
 
     const handleChange = (e) => {
         setFood({...food, [e.target.name]: e.target.value})
     }
 
-    const handleSubmit = async(e) => {
-        e.preventDefault()
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0])
+    }
 
-        const res = fetch('http://localhost:3000/user/setcard', {
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
+        const formData = new FormData()
+        formData.append("name", food.name)
+        formData.append("category", food.category)
+        formData.append("price", food.price)
+        if (file) {
+            formData.append("image", file)
+        }
+
+        const res = await fetch('http://localhost:3000/user/setcard', {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-        
-            },
-            body:JSON.stringify(food)
+            
+            body:formData,
         })
 
         const data = await res.json()
         alert(data.message)
 
-        if((await res).ok){
-            navigate('/foods')
+        if(res.ok){
+           navigate('/foods')
         }
     }
 
@@ -42,6 +53,10 @@ function SubmitForm(){
         <div>
             <div  className="bg-gray-600 ">
                 <form onSubmit={handleSubmit}  action=""  className="p-4 space-y-2 flex flex-col w-100">
+                     <div className="grid w-full max-w-sm items-center gap-3">
+                        <Label className= 'text-white' htmlFor="picture">Picture</Label>
+                        <Input id="picture"  name="image" onChange={handleFileChange}  className='bg-white' type="file" />
+                     </div>
                     <input  className="bg-white rounded-xl mb-3 shadow-xl px-4 py-2 shadow-black" onChange={handleChange}  name="name" placeholder="Name" />
                     <input className="bg-white rounded-xl mb-3 shadow-xl px-4 py-2 shadow-black" onChange={handleChange}  name="category" placeholder="Category" />
                     <input className="bg-white rounded-xl mb-3 shadow-xl px-4 py-2 shadow-black" onChange={handleChange}  name="price" placeholder="Price" />
