@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-function Foods(){
+function Foods({ cartItems, setCartItems }){
  
     const navigate = useNavigate()
 
@@ -18,6 +18,11 @@ function Foods(){
         )
       },[])
 
+       const handleAddToCart = (food) => {
+            if (!cartItems.find((item) => item._id === food._id)) {
+            setCartItems([...cartItems, food]);
+          }
+        };
 
  return(
 
@@ -44,7 +49,7 @@ function Foods(){
           className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 hover:scale-105 transition-all duration-300 shadow-md"
         >
           <ShoppingCartIcon className="w-5 h-5" />
-          View Cart
+          View Cart ({cartItems.length})
         </button>
       </div>
     </nav>
@@ -60,7 +65,9 @@ function Foods(){
        
       {/* Card */}
       <div className="flex flex-wrap gap-6 justify-center mt-8">
-          {foodItems.map((food) => (
+          {foodItems.map((food) => {
+             const isAdded = cartItems.find((item) => item._id === food._id);
+          return (
          <div
             key={food._id}
             className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col w-80 hover:shadow-2xl transition"
@@ -83,13 +90,22 @@ function Foods(){
             <p className="text-sm text-gray-500 mb-4">{food.category}</p>
 
               {/* Button */}
-              <button className="mt-auto flex items-center justify-center gap-2 bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:bg-red-600 shadow-md transition">
+              <button
+               onClick={() => handleAddToCart(food)}
+                  disabled={isAdded}
+                  className={`mt-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl font-semibold shadow-md transition ${
+                    isAdded
+                      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                      : "bg-red-500 text-white hover:bg-red-600"
+                  }`}
+              >
                <ShoppingCartIcon className="w-5 h-5" />
-                   Add to Cart
+                    {isAdded ? "Added" : "Add to Cart"}
                 </button>
            </div>
         </div>
-       ))}
+          )
+      })}
   </div>
  </div>
   
