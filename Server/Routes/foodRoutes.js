@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
          const dir = "uploads/";
          if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);   // ✅ create folder if missing
+            fs.mkdirSync(dir);    // ✅ create folder if missing
                  }
          cb(null, dir);
     },
@@ -43,13 +43,13 @@ router.post('/setcard', upload.single('image') , async(req, res) => {
         
         const newCard = new Card({
             name: req.body.name,
-            category: req.body.category ,
+            category: req.body.category,
             price:  req.body.price ,
             image: req.file? `/uploads/${req.file.filename}` : null
         })
         await newCard.save()
         res.status(201).json({message:"New FoodCard added successfully"})
-    } catch (error) {
+    } catch (error) {       
         console.error("Error adding Card", error)
         res.status(500).json({message:"Internal Server error", error})
     }
