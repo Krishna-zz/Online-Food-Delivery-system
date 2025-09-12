@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
          const dir = "uploads/";
          if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);    // ✅ create folder if missing
+            fs.mkdirSync(dir);   
                  }
          cb(null, dir);
     },
