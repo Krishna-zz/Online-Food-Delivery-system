@@ -11,7 +11,7 @@ function Cart({ cartItems, setCartItems }) {
 
   const handlePlaceOrder = () => {
     navigate("/order-success");
-    setCartItems([]); // Clear cart after order
+    setCartItems([]); 
   };
 
 

@@ -1,6 +1,6 @@
 
 
-// src/pages/OrderSuccess.jsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ const OrderSuccess = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center">
-      {/* Big red tick circle */}
+      {}
       <div className="flex items-center justify-center w-24 h-24 rounded-full bg-green-500 mb-6">
         <svg
           className="w-12 h-12 text-white"
